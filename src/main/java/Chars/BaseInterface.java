@@ -1,3 +1,5 @@
+package Chars;
+
 import java.util.ArrayList;
 
 public interface BaseInterface {

@@ -1,54 +1,51 @@
+import Chars.*;
+
 import java.util.ArrayList;
 import java.util.Random;
-
-import static java.lang.Math.random;
+import java.util.Scanner;
 
 public class Main {
+
+    public static final int teamSize = 10;
+    public static ArrayList<BaseHero> darkTeam;
+    public static ArrayList<BaseHero> lightTeam;
     public static void main(String[] args) {
+        init();
 
-        ArrayList<BaseHero> darkTeam = new ArrayList<BaseHero>();
-        ArrayList<BaseHero> lightTeam = new ArrayList<BaseHero>();
+        Scanner scanner = new Scanner(System.in);
+        while (true){
+            ConsoleView.view();
+            System.out.println("Press Enter");
+            scanner.nextLine();
+        }
+    }
 
-        Random rand = new Random();
-        for (int i = 0; i < 5; i++) {
-            int charSelection = rand.nextInt(0, 4);
-            switch (charSelection) {
-                case 0 -> darkTeam.add(new Peasant(BaseHero.heroID, "darkTeam"));
-                case 1 -> darkTeam.add(new Crossbowman(BaseHero.heroID, "darkTeam"));
-                case 2 -> darkTeam.add(new Pikeman(BaseHero.heroID, "darkTeam"));
-                case 3 -> darkTeam.add(new Wizard(BaseHero.heroID, "darkTeam"));
+    public static void init(){
+        darkTeam = new ArrayList<BaseHero>();
+        lightTeam = new ArrayList<BaseHero>();
+
+        int x = 1;
+        int y = 1;
+
+        for (int i = 0; i < teamSize; i++) {
+            switch (new Random().nextInt(4)) {
+                case 0 -> lightTeam.add(new Peasant("lightTeam", x++, y));
+                case 1 -> lightTeam.add(new Monk("lightTeam", x++, y));
+                case 2 -> lightTeam.add(new Robber("lightTeam", x++, y));
+                case 3 -> lightTeam.add(new Sniper("lightTeam", x++, y));
             }
         }
 
-        for (int i = 0; i < 5; i++) {
-            int charSelection = rand.nextInt(0, 4);
-            switch (charSelection) {
-                case 0 -> lightTeam.add(new Peasant(BaseHero.heroID, "lightTeam"));
-                case 1 -> lightTeam.add(new Monk(BaseHero.heroID, "lightTeam"));
-                case 2 -> lightTeam.add(new Robber(BaseHero.heroID, "lightTeam"));
-                case 3 -> lightTeam.add(new Sniper(BaseHero.heroID, "lightTeam"));
+        x = 1;
+        y = 10;
+
+        for (int i = 0; i < teamSize; i++) {
+            switch (new Random().nextInt(4)) {
+                case 0 -> darkTeam.add(new Peasant("darkTeam", x++, y));
+                case 1 -> darkTeam.add(new Crossbowman("darkTeam", x++, y));
+                case 2 -> darkTeam.add(new Pikeman("darkTeam", x++, y));
+                case 3 -> darkTeam.add(new Wizard("darkTeam", x++, y));
             }
-            BaseHero.heroID += 1;
-        }
-
-        for (BaseHero hero: darkTeam) {
-            System.out.println(hero.getInfo());
-        }
-
-        darkTeam.get(0).setCurrentHealth(5);
-
-        System.out.println("______________________________________________");
-
-        for (BaseHero hero: darkTeam) {
-            System.out.println(hero.getInfo());
-        }
-
-        System.out.println("______________________________________________");
-
-        new Monk(0, "0").Step(darkTeam);
-
-        for (BaseHero hero: darkTeam) {
-            System.out.println(hero.getInfo());
         }
     }
 }

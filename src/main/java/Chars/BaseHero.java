@@ -1,8 +1,12 @@
+package Chars;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class BaseHero implements BaseInterface{
-    protected static int heroID = 1;
+    public static int IDcounter;
+    private int heroID;
+    protected String name;
     protected int attack;
     protected int protection;
     protected int shot;
@@ -12,11 +16,12 @@ public abstract class BaseHero implements BaseInterface{
     protected int speed;
     protected int delivery;
     protected Boolean magic;
-
     protected String teamName;
+    protected Vector2 position;
 
-    public BaseHero(int heroID, int attack, int protection, int shot, int[] damage, int maxHealth, int speed, int delivery, Boolean magic, String teamName) {
-        this.heroID = heroID;
+    public BaseHero(String name, int attack, int protection, int shot, int[] damage, int maxHealth, int speed, int delivery, Boolean magic, String teamName) {
+        heroID = IDcounter++;
+        this.name = name;
         this.attack = attack;
         this.protection = protection;
         this.shot = shot;
@@ -47,15 +52,8 @@ public abstract class BaseHero implements BaseInterface{
     @Override
     public String getInfo(){
         return  "heroID = " + heroID +
-                ", attack = " + attack +
-                ", protection = " + protection +
-                ", shot = " + shot +
-                ", damage = " + Arrays.toString(damage) +
-                ", maxhealth = " + maxHealth +
+                ", name = " + name +
                 ", currenthealth = " + currentHealth +
-                ", speed = " + speed +
-                ", delivery = " + delivery +
-                ", magic = " + magic +
                 ", team = " + teamName;
     }
     @Override
@@ -78,5 +76,11 @@ public abstract class BaseHero implements BaseInterface{
     public void setCurrentHealth(int health){
         this.currentHealth = health;
     }
+
+    public Vector2 getPosition(){return position;}
+
+    public String getName(){return name;}
+    public String getTeamName() {return teamName;}
+    public int getHeroID() {return heroID;}
 
 }

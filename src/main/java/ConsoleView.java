@@ -31,7 +31,8 @@ public class ConsoleView {
         System.out.println("Name" + String.join("",Collections.nCopies(maxNameLen - "Name".length(), " "))
                 + "HeroID" + String.join("",Collections.nCopies(maxHeroIDLen - "HeroID".length(), " "))
                 + "CurrentHealth" + String.join("",Collections.nCopies(maxCurrentHealthLen - "CurrentHealth".length(), " "))
-                + "TeamName" + String.join("", Collections.nCopies(maxTeamNameLen - "TeamName".length(), " ")));
+                + "TeamName" + String.join("", Collections.nCopies(maxTeamNameLen - "TeamName".length(), " "))
+                + "Status" + String.join("", Collections.nCopies(maxStatusLen - "Status".length(), " ")));
         for (int i = 1; i <= Main.teamSize - 1; i++) {
             info = "";
             for (int j = 1; j <= Main.teamSize; j++) {
@@ -68,20 +69,23 @@ public class ConsoleView {
                 str = Main.darkTeam.get(i).getName() + String.join("",Collections.nCopies(maxNameLen - Main.darkTeam.get(i).getName().length(), " "))
                         + Main.darkTeam.get(i).getHeroID() + String.join("",Collections.nCopies(maxHeroIDLen - String.valueOf(Main.darkTeam.get(i).getHeroID()).length(), " "))
                         + Main.darkTeam.get(i).getCurrentHealth() + String.join("",Collections.nCopies(maxCurrentHealthLen - String.valueOf(Main.darkTeam.get(i).getCurrentHealth()).length(), " "))
-                        + Main.darkTeam.get(i).getTeamName() + String.join("", Collections.nCopies(maxTeamNameLen - Main.darkTeam.get(i).getTeamName().length(), " "));
+                        + Main.darkTeam.get(i).getTeamName() + String.join("", Collections.nCopies(maxTeamNameLen - Main.darkTeam.get(i).getTeamName().length(), " "))
+                        + Main.darkTeam.get(i).getStatus() + String.join("", Collections.nCopies(maxStatusLen - Main.darkTeam.get(i).getStatus().length(), " "));
             if (Main.lightTeam.get(i).getPosition().isEqual(position))
                 str = Main.lightTeam.get(i).getName() + String.join("",Collections.nCopies(maxNameLen - Main.lightTeam.get(i).getName().length(), " "))
                         + Main.lightTeam.get(i).getHeroID() + String.join("",Collections.nCopies(maxHeroIDLen - String.valueOf(Main.lightTeam.get(i).getHeroID()).length(), " "))
                         + Main.lightTeam.get(i).getCurrentHealth() + String.join("",Collections.nCopies(maxCurrentHealthLen - String.valueOf(Main.lightTeam.get(i).getCurrentHealth()).length(), " "))
-                        + Main.lightTeam.get(i).getTeamName() + String.join("", Collections.nCopies(maxTeamNameLen - Main.lightTeam.get(i).getTeamName().length(), " "));
+                        + Main.lightTeam.get(i).getTeamName() + String.join("", Collections.nCopies(maxTeamNameLen - Main.lightTeam.get(i).getTeamName().length(), " "))
+                        + Main.lightTeam.get(i).getStatus() + String.join("", Collections.nCopies(maxStatusLen - Main.lightTeam.get(i).getStatus().length(), " "));
         }
         return str;
     }
 
-    private static final int maxNameLen = maxNameLen(Main.darkTeam, Main.lightTeam) + 1;
-    private static final int maxTeamNameLen = maxTeamNameLen(Main.darkTeam, Main.lightTeam) + 1;
-    private static final int maxHeroIDLen = maxHeroIDLen(Main.darkTeam, Main.lightTeam) + 1;
-    private static final int maxCurrentHealthLen = maxCurrentHealthLen(Main.darkTeam, Main.lightTeam) + 1;
+    private static final int maxNameLen = maxNameLen(Main.darkTeam, Main.lightTeam) + 2;
+    private static final int maxTeamNameLen = maxTeamNameLen(Main.darkTeam, Main.lightTeam) + 2;
+    private static final int maxHeroIDLen = maxHeroIDLen(Main.darkTeam, Main.lightTeam) + 2;
+    private static final int maxCurrentHealthLen = maxCurrentHealthLen(Main.darkTeam, Main.lightTeam) + 2;
+    private static final int maxStatusLen = maxStatusLen(Main.darkTeam, Main.lightTeam) + 2;
     public static int maxNameLen(ArrayList<BaseHero> team1, ArrayList<BaseHero> team2){
         int maxNameLen = team1.get(0).getName().length();
         for (int i = 1; i < team1.size(); i++) {
@@ -99,10 +103,26 @@ public class ConsoleView {
 
     public static int maxTeamNameLen(ArrayList<BaseHero> team1, ArrayList<BaseHero> team2){
         int maxTeamNameLen = team1.get(0).getTeamName().length();
-            if (team2.get(0).getTeamName().length() > maxNameLen){
+            if (team2.get(0).getTeamName().length() > maxTeamNameLen){
                 maxTeamNameLen = team2.get(0).getTeamName().length();
             }
         return maxTeamNameLen;
+    }
+
+    public static int maxStatusLen(ArrayList<BaseHero> team1, ArrayList<BaseHero> team2){
+        String fieldName = "Status";
+        int maxStatusLen = fieldName.length();
+        for (int i = 0; i < team1.size(); i++) {
+            if (team1.get(i).getStatus().length() > maxStatusLen){
+                maxStatusLen = team1.get(i).getStatus().length();
+            }
+        }
+        for (int i = 0; i < team2.size(); i++) {
+            if (team2.get(i).getStatus().length() > maxStatusLen){
+                maxStatusLen = team2.get(i).getStatus().length();
+            }
+        }
+        return maxStatusLen;
     }
 
     public static int maxHeroIDLen(ArrayList<BaseHero> team1, ArrayList<BaseHero> team2){
@@ -137,11 +157,4 @@ public class ConsoleView {
         return maxCurrentHealthLen;
     }
 
-    /*private static void infoView(){
-        for (int i = 0; i < Main.teamSize; i++) {
-            for (int j = 0; j < Main.teamSize; j++) {
-                if(Main.lightTeam.get(i).getPosition().isEqual(Vector2(i, j)))
-            }
-        }
-    }*/
 }

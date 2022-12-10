@@ -1,3 +1,4 @@
+import Abstract.BaseHero;
 import Chars.*;
 
 import java.util.ArrayList;
@@ -23,14 +24,17 @@ public class Main {
             ConsoleView.view();
             System.out.println("Press Enter");
             scanner.nextLine();
-            warriorsDT.forEach(n -> n.step(lightTeam));
-            warriorsWT.forEach(n -> n.step(darkTeam));
-            magiciansDT.forEach(n -> n.step(darkTeam));
+            for (int i = 0; i < teamSize; i++) {
+                lightTeam.get(i).step(darkTeam);
+                darkTeam.get(i).step(lightTeam);
+            }
+            /*magiciansDT.forEach(n -> n.step(darkTeam));
             magiciansWT.forEach(n -> n.step(lightTeam));
             peasantsDT.forEach(n -> n.step(darkTeam));
-            peasantsWT.forEach(n -> n.step(lightTeam));
+            peasantsWT.forEach(n -> n.step(lightTeam));*/
         }
     }
+
 
     public static void init(){
         darkTeam = new ArrayList<BaseHero>();

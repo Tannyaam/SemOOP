@@ -1,9 +1,11 @@
-package Chars;
+package Abstract;
+
+import Chars.Vector2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class BaseHero implements BaseInterface{
+public abstract class BaseHero implements BaseInterface {
     public static int IDcounter;
     private int heroID;
     protected String name;
@@ -59,7 +61,7 @@ public abstract class BaseHero implements BaseInterface{
                 ", team = " + teamName;
     }
     @Override
-    public void step(ArrayList<BaseHero> step){
+    public void step(ArrayList<BaseHero> team){
     }
     public int getCurrentHealth(){
         return currentHealth;
@@ -80,26 +82,34 @@ public abstract class BaseHero implements BaseInterface{
     public int getShot() {return shot;}
 
     protected void setShot(int shot) {this.shot = shot;}
-    protected void setStatus(String status) {this.status = status;}
+    public void setStatus(String status) {this.status = status;}
 
-    public int getProtection() {return protection;}
-    protected int damageValue(BaseHero nearestHero){
+    protected int getProtection() {return protection;}
+    protected int damageValue(BaseHero aim){
         int value = 0;
-        if (this.attack - nearestHero.getProtection() == 0) value = (this.getDamage()[0] + this.getDamage()[1])/2;
-        if (this.attack - nearestHero.getProtection() > 0) value = this.getDamage()[1];
-        if (this.attack - nearestHero.getProtection() < 0) value = this.getDamage()[0];
+        if (this.attack - aim.getProtection() == 0) value = (this.getDamage()[0] + this.getDamage()[1])/2;
+        if (this.attack - aim.getProtection() > 0) value = this.getDamage()[1];
+        if (this.attack - aim.getProtection() < 0) value = this.getDamage()[0];
         return value;
     }
-    protected void damage(int damage){
-        this.currentHealth = getCurrentHealth() - damage;
-        if (this.currentHealth <= 0){
-            this.status = "dead";
-            this.currentHealth = 0;
+    public void damage(int damage, BaseHero aim){
+        int aimCurrentHealth = aim.getCurrentHealth() - damage;
+        if(aimCurrentHealth > 0){
+            if (aimCurrentHealth > aim.maxHealth) aim.setCurrentHealth(aim.maxHealth);
+            else aim.setCurrentHealth(aimCurrentHealth);
         }
-        if (this.currentHealth > this.maxHealth) this.currentHealth = this.maxHealth;
+        else{
+            aim.status = "dead";
+            aim.setCurrentHealth(0);
+        }
     }
 
-    public int getSpeed() {return speed;}
+    protected int getSpeed() {return speed;}
 
     public String getStatus() {return status;}
+    public void setPosition(int x, int y) {
+        this.position.x = x;
+        this.position.y = y;
+    }
+    public ArrayList<BaseHero> getTeam() {return team;}
 }

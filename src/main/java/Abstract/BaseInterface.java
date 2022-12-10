@@ -1,4 +1,6 @@
-package Chars;
+package Abstract;
+
+import Abstract.BaseHero;
 
 import java.util.ArrayList;
 

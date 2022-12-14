@@ -22,8 +22,9 @@ public abstract class BaseHero implements BaseInterface {
     protected Vector2 position;
     protected ArrayList<BaseHero> team;
     protected String status;
+    protected int amount;
 
-    public BaseHero(String name, int attack, int protection, int shot, int[] damage, int maxHealth, int speed, int delivery, Boolean magic, String teamName, ArrayList<BaseHero> team) {
+    public BaseHero(String name, int attack, int protection, int shot, int[] damage, int maxHealth, int speed, int delivery, Boolean magic, int amount, String teamName, ArrayList<BaseHero> team) {
         heroID = IDcounter++;
         this.name = name;
         this.attack = attack;
@@ -35,6 +36,7 @@ public abstract class BaseHero implements BaseInterface {
         this.speed = speed;
         this.delivery = delivery;
         this.magic = magic;
+        this.amount = amount;
         this.teamName = teamName;
         this.team = team;
         this.status = "stand";
@@ -42,6 +44,7 @@ public abstract class BaseHero implements BaseInterface {
     @Override
     public String toString() {
         return  "heroID = " + heroID +
+                ", name = " + name +
                 ", attack = " + attack +
                 ", protection = " + protection + 
                 ", shot = " + shot + 
@@ -55,10 +58,11 @@ public abstract class BaseHero implements BaseInterface {
     }
     @Override
     public String getInfo(){
-        return  "heroID = " + heroID +
-                ", name = " + name +
-                ", currenthealth = " + currentHealth +
-                ", team = " + teamName;
+        return  "heroID: " + heroID +
+                ", name: " + name +
+                ", currenthealth: " + currentHealth +
+                ", units: " + amount +
+                ", team: " + teamName;
     }
     @Override
     public void step(ArrayList<BaseHero> team){
@@ -87,13 +91,16 @@ public abstract class BaseHero implements BaseInterface {
     protected int getProtection() {return protection;}
     protected int damageValue(BaseHero aim){
         int value = 0;
-        if (this.attack - aim.getProtection() == 0) value = (this.getDamage()[0] + this.getDamage()[1])/2;
-        if (this.attack - aim.getProtection() > 0) value = this.getDamage()[1];
-        if (this.attack - aim.getProtection() < 0) value = this.getDamage()[0];
-        return value;
+        if (this.attack - aim.getProtection() == 0) value = (this.damage[0] + this.damage[1])/2;
+        if (this.attack - aim.getProtection() > 0) value = this.damage[1];
+        if (this.attack - aim.getProtection() < 0) value = this.damage[0];
+        return value * this.amount;
     }
-    public void damage(int damage, BaseHero aim){
-        int aimCurrentHealth = aim.getCurrentHealth() - damage;
+    public void getHit(int damageValue, BaseHero aim){
+    }
+
+    /*public void getDamage(int damageValue, BaseHero aim){
+        int aimCurrentHealth = aim.getCurrentHealth() - damageValue;
         if(aimCurrentHealth > 0){
             if (aimCurrentHealth > aim.maxHealth) aim.setCurrentHealth(aim.maxHealth);
             else aim.setCurrentHealth(aimCurrentHealth);
@@ -102,9 +109,21 @@ public abstract class BaseHero implements BaseInterface {
             aim.status = "dead";
             aim.setCurrentHealth(0);
         }
+    }*/
+
+    /*public void damage(int damageValue){
+        setCurrentHealth(getCurrentHealth() - damageValue);
+        checkStatus();
+    }*/
+
+    public void checkStatus(BaseHero aim){
+        if((aim.amount <= 0) && (aim.getCurrentHealth() <= 0)){
+            status = "dead";
+            amount = 0;
+        }
     }
 
-    protected int getSpeed() {return speed;}
+    public int getSpeed() {return speed;}
 
     public String getStatus() {return status;}
     public void setPosition(int x, int y) {
@@ -112,4 +131,8 @@ public abstract class BaseHero implements BaseInterface {
         this.position.y = y;
     }
     public ArrayList<BaseHero> getTeam() {return team;}
+    public int getAmount(){return amount;}
+    public void setAmount(int amount){
+        this.amount = amount;
+    }
 }
